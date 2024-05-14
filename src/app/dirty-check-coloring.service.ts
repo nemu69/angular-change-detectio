@@ -1,5 +1,5 @@
 import { ElementRef, Injectable, NgZone } from "@angular/core";
-import { BehaviorSubject, Observable, Subject } from "rxjs";
+import { BehaviorSubject, Observable, Subject, of } from "rxjs";
 import { delay, delayWhen, distinctUntilChanged, take } from "rxjs/operators";
 import { DelayedScheduler } from "./delayed-scheduler.service";
 
@@ -35,14 +35,16 @@ export class DirtyCheckColoringService {
       const element = elementRef.nativeElement;
       const cssClass = "dirty-check";
       this._delayedScheduler.schedule(() => {
-        element.classList.add(cssClass);
+        setTimeout(() => {
+          element.classList.add(cssClass);
+        }, 1000)
       });
 
       if (this._autoClearColoring) {
         this._delayedScheduler.done$
           .pipe(
             take(1), // subscribe once
-            delay(1000) // clear after 1s
+            delay(2000) // clear after 1s
           )
           .subscribe(() => {
             element.classList.remove(cssClass);
@@ -52,7 +54,8 @@ export class DirtyCheckColoringService {
         this._delayedScheduler.done$
           .pipe(
             take(1), // subscribe once
-            delayWhen(() => this._clearColoring$)
+            // delayWhen(() => this._clearColoring$)
+            delay(1000),
           )
           .subscribe(() => {
             element.classList.remove(cssClass);

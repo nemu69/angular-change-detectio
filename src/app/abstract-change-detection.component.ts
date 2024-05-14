@@ -45,7 +45,7 @@ export abstract class AbstractChangeDetectionComponent implements AfterViewInit,
   private _stateService = inject(StateService);
   protected signal = signal(0);
 
-  pokemon = signal(Math.floor(Math.random() * 299) + 1);
+  pokemon = Math.floor(Math.random() * 299) + 1;
 
   constructor(
       public name: string,
@@ -69,6 +69,7 @@ export abstract class AbstractChangeDetectionComponent implements AfterViewInit,
     this._zone.runOutsideAngular(() => {
       this._dirtyCheckColoringService.busy$.pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe((busy) => {
+            this.pokemon = Math.floor(Math.random() * 299) + 1;
             this._actionSelect.nativeElement.disabled = busy;
             this._executeButton.nativeElement.disabled = busy;
             if (!busy) {
@@ -174,7 +175,7 @@ export abstract class AbstractChangeDetectionComponent implements AfterViewInit,
       return 'HasChildViewsToRefresh';
     } else if (flags & 1024) {
       return 'RefreshView';
-    } else if (consumer.dirty) {
+    } else if (consumer?.dirty) {
       return 'Consumer dirty';
     } else {
       return null;

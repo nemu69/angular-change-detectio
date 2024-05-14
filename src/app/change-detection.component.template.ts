@@ -18,7 +18,7 @@ export function template(children: string = ''): string {
             </div>
                   
             <div style="height: 120px; padding: 10px;">
-              <img style="height: 100%; width: 100%;" [src]="'pokemons/' + pokemon() + '.svg'" />
+              <img style="height: 100%; width: 100%;" [src]="'pokemons/' + pokemon + '.svg'" />
             </div>
 
             <div class="action">
