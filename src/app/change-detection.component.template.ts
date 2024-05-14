@@ -17,7 +17,9 @@ export function template(children: string = ''): string {
               <span class="tag cd-state-box" #cd_state_box ></span>
             </div>
                   
-            <img style="height: 100%; width: 100%;" [src]="'/assets/pokemons/' + pokemon() + '.svg'" />
+            <div style="height: 120px; padding: 10px;">
+              <img style="height: 100%; width: 100%;" [src]="'pokemons/' + pokemon() + '.svg'" />
+            </div>
 
             <div class="action">
               <select #action_list>
