@@ -1,4 +1,4 @@
-export function template(children: string = ''): string {
+export function template(children: string = ''): string {  
   return `
         {{touch}}
      <!--   <button class="toggle-visibility" #toggle_visiblity (click.outside)="onToggleVisibility()">-</button>-->
@@ -16,12 +16,9 @@ export function template(children: string = ''): string {
               <span  class="tag ng-on-changes-box" #ng_on_changes_box>ngOnChanges</span>
               <span class="tag cd-state-box" #cd_state_box ></span>
             </div>
-            <table class="input-box">
-              <tr><th>input value:</th><td class="input-value">{{inputByVal}}</td></tr>
-              <tr><th>object prop:</th><td class="input-value">{{inputByRef.value}}</td></tr>
-              <tr><th>observable:</th><td class="input-value">{{inputObservableValue}}</td></tr>
-              <tr><th>local signal:</th><td class="input-value">{{signal()}}</td></tr>
-            </table>
+                  
+            <img style="height: 100%; width: 100%;" [src]="'/assets/pokemons/' + pokemon() + '.svg'" />
+
             <div class="action">
               <select #action_list>
                 <option value="click">Click</option>

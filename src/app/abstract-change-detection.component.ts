@@ -45,6 +45,8 @@ export abstract class AbstractChangeDetectionComponent implements AfterViewInit,
   private _stateService = inject(StateService);
   protected signal = signal(0);
 
+  pokemon = signal(Math.floor(Math.random() * 299) + 1);
+
   constructor(
       public name: string,
       private _level: number,
