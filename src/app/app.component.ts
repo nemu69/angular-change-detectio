@@ -3,7 +3,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {toCanvas} from 'qrcode';
 import {Subject} from 'rxjs';
 
-import {DirtyCheckColoringService} from './dirty-check-coloring.service';
+import {DirtyCheckService} from './dirty-check.service';
 import {NumberHolder} from './number-holder';
 import {WarningService} from './warning.service';
 
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   constructor(
       private _zone: NgZone,
       private _appRef: ApplicationRef,
-      private _dirtyCheckColoringService: DirtyCheckColoringService,
+      private _dirtyCheckColoringService: DirtyCheckService,
       private _warningService: WarningService,
   ) {}
 

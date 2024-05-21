@@ -1,12 +1,13 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, DestroyRef, Directive, ElementRef, HostBinding, inject, Injectable, Input, NgZone, OnChanges, signal, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, computed, DestroyRef, Directive, ElementRef, HostBinding, inject, Injectable, Input, NgZone, OnChanges, signal, SimpleChanges, ViewChild} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {fromEvent, Observable, Subject} from 'rxjs';
 import {takeUntil, tap} from 'rxjs/operators';
 
 import {ColorService} from './color.service';
-import {DirtyCheckColoringService} from './dirty-check-coloring.service';
+import {DirtyCheckService} from './dirty-check.service';
 import {NumberHolder} from './number-holder';
 import {WarningService} from './warning.service';
+import { getPokemonName } from 'pokemon.data';
 
 @Directive()
 export abstract class AbstractChangeDetectionComponent implements AfterViewInit, OnChanges {
@@ -38,14 +39,17 @@ export abstract class AbstractChangeDetectionComponent implements AfterViewInit,
 
   private _hostRef = inject(ElementRef);
   private _colorService = inject(ColorService);
-  private _dirtyCheckColoringService = inject(DirtyCheckColoringService);
+  private _dirtyCheckColoringService = inject(DirtyCheckService);
   private _cd = inject(ChangeDetectorRef);
   private _zone = inject(NgZone);
   private _warningService = inject(WarningService);
   private _stateService = inject(StateService);
   protected signal = signal(0);
 
-  pokemon = Math.floor(Math.random() * 299) + 1;
+  pokemon = signal(Math.floor(Math.random() * 299) + 1);
+  pokemonName = computed(() => getPokemonName(this.pokemon()));
+
+  firstCheck = true;
 
   constructor(
       public name: string,
@@ -69,7 +73,6 @@ export abstract class AbstractChangeDetectionComponent implements AfterViewInit,
     this._zone.runOutsideAngular(() => {
       this._dirtyCheckColoringService.busy$.pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe((busy) => {
-            this.pokemon = Math.floor(Math.random() * 299) + 1;
             this._actionSelect.nativeElement.disabled = busy;
             this._executeButton.nativeElement.disabled = busy;
             if (!busy) {
@@ -124,8 +127,14 @@ export abstract class AbstractChangeDetectionComponent implements AfterViewInit,
     this._colorService.colorNgOnChanges(this._ngOnChangesBox);
   }
 
-  public get touch(): void {
-    return this._colorService.colorDirtyCheck(this._hostRef);
+  public touch(): void {
+    this._colorService.colorDirtyCheck(this._hostRef, this.firstCheck);
+
+    this._zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.firstCheck = false;
+      });
+    });
   }
 
   public onClick(): void {

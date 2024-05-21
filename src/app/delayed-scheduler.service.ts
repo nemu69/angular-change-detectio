@@ -1,16 +1,18 @@
 import { Injectable, NgZone } from "@angular/core";
-import { Observable, Subject } from "rxjs";
+import { Observable, Subject, take } from "rxjs";
 
 export type Fn = () => void;
 
 @Injectable({ providedIn: "root" })
 export class DelayedScheduler {
-  private static readonly DELAY = 75;
+  private static DELAY = 100;
 
   private _queue: Fn[] = [];
   private _done$ = new Subject<void>();
 
-  constructor(private _zone: NgZone) {}
+  constructor(private _zone: NgZone) {
+    this._done$.pipe(take(1)).subscribe(() => DelayedScheduler.DELAY = 600);
+  }
 
   public schedule(fn: Fn): void {
     this._queue.push(fn);

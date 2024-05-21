@@ -1,13 +1,13 @@
 import {ElementRef, Injectable, NgZone} from '@angular/core';
 
-import {DirtyCheckColoringService} from './dirty-check-coloring.service';
+import {DirtyCheckService} from './dirty-check.service';
 
 @Injectable()
 export class ColorService {
   private ngOnChangesHandle?: number;
 
   constructor(
-      private _zone: NgZone, private _dirtyCheckColoringService: DirtyCheckColoringService) {}
+      private _zone: NgZone, private _dirtyCheckColoringService: DirtyCheckService) {}
 
   public colorNgOnChanges(elementRef: ElementRef<HTMLElement>): void {
     this._zone.runOutsideAngular(() => {
@@ -16,9 +16,9 @@ export class ColorService {
     });
   }
 
-  public colorDirtyCheck(elementRef: ElementRef): void {
+  public colorDirtyCheck(elementRef: ElementRef, firstCheck: boolean): void {
     this._zone.runOutsideAngular(() => {
-      this._dirtyCheckColoringService.colorDirtyCheck(elementRef);
+      this._dirtyCheckColoringService.dirtyCheck(elementRef, firstCheck);
     });
   }
 
