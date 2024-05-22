@@ -29,7 +29,7 @@ import {ZoneEventPlugin} from './zone.event-plugin';
 
 @NgModule({
   declarations: [
-    AppComponent,           Comp_1_Component,       Comp_1_1_Component,
+    Comp_1_Component,       Comp_1_1_Component,
     Comp_1_2_Component,     Comp_1_x_1_Component,   Comp_1_x_1_1_Component,
     Comp_1_x_1_2_Component, Comp_1_x_1_3_Component, Comp_1_x_1_4_Component,
     Comp_1_x_2_Component,   Comp_1_x_2_1_Component, Comp_1_x_2_2_Component,
@@ -38,15 +38,16 @@ import {ZoneEventPlugin} from './zone.event-plugin';
     Comp_1_x_3_4_Component, Comp_1_x_4_Component,   Comp_1_x_4_1_Component,
     Comp_1_x_4_2_Component, Comp_1_x_4_3_Component, Comp_1_x_4_4_Component,
   ],
-  imports: [BrowserModule],
-  providers: [{
-    provide: EVENT_MANAGER_PLUGINS,
-    useClass: ZoneEventPlugin,
-    multi: true,
-  }
-
-  ],
-  bootstrap: [AppComponent],
+  exports: [
+    Comp_1_Component,       Comp_1_1_Component,
+    Comp_1_2_Component,     Comp_1_x_1_Component,   Comp_1_x_1_1_Component,
+    Comp_1_x_1_2_Component, Comp_1_x_1_3_Component, Comp_1_x_1_4_Component,
+    Comp_1_x_2_Component,   Comp_1_x_2_1_Component, Comp_1_x_2_2_Component,
+    Comp_1_x_2_3_Component, Comp_1_x_2_4_Component, Comp_1_x_3_Component,
+    Comp_1_x_3_1_Component, Comp_1_x_3_2_Component, Comp_1_x_3_3_Component,
+    Comp_1_x_3_4_Component, Comp_1_x_4_Component,   Comp_1_x_4_1_Component,
+    Comp_1_x_4_2_Component, Comp_1_x_4_3_Component, Comp_1_x_4_4_Component,
+  ]
 })
 export class AppModule {
 }

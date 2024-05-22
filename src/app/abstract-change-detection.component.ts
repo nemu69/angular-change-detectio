@@ -13,7 +13,6 @@ import { getPokemonName } from 'pokemon.data';
 export abstract class AbstractChangeDetectionComponent implements AfterViewInit, OnChanges {
   private destroyRef = inject(DestroyRef);
   private _destroyInputObservable$ = new Subject<void>();
-  private cdRef = inject(ChangeDetectorRef);
 
   @ViewChild('execute_button', {static: true})
   private _executeButton!: ElementRef<HTMLButtonElement>;
@@ -48,8 +47,6 @@ export abstract class AbstractChangeDetectionComponent implements AfterViewInit,
 
   pokemon = signal(Math.floor(Math.random() * 299) + 1);
   pokemonName = computed(() => getPokemonName(this.pokemon()));
-
-  firstCheck = true;
 
   constructor(
       public name: string,
@@ -128,13 +125,7 @@ export abstract class AbstractChangeDetectionComponent implements AfterViewInit,
   }
 
   public touch(): void {
-    this._colorService.colorDirtyCheck(this._hostRef, this.firstCheck);
-
-    this._zone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.firstCheck = false;
-      });
-    });
+    this._colorService.colorDirtyCheck(this._hostRef);
   }
 
   public onClick(): void {

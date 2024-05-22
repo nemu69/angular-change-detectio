@@ -13,13 +13,17 @@ export class DirtyCheckService {
   private _autoClearColoring = true;
   private _busy$ = new BehaviorSubject<boolean>(false);
 
-  #elements: HTMLElement[] = [];
+  private firstCheck = true;
 
   get isAutoClearColoring(): boolean {
     return this._autoClearColoring;
   }
 
-  constructor(private _zone: NgZone, private _delayedScheduler: DelayedScheduler) {}
+  constructor(private _zone: NgZone, private _delayedScheduler: DelayedScheduler) {
+    this._delayedScheduler.done$.pipe(take(1)).subscribe(() => {
+      this.firstCheck = false;
+    })
+  }
 
   public clearColoring(): void {
     this._clearColoring$.next();
@@ -32,7 +36,7 @@ export class DirtyCheckService {
     }
   }
 
-  public dirtyCheck(elementRef: ElementRef<HTMLElement>, firstCheck: boolean): void {
+  public dirtyCheck(elementRef: ElementRef<HTMLElement>): void {
     this._busy$.next(true);
     this._zone.runOutsideAngular(() => {
       const element = elementRef.nativeElement;
@@ -40,13 +44,18 @@ export class DirtyCheckService {
       this._delayedScheduler.schedule(() => {
         element.classList.add(cssClass);
 
-        if (!firstCheck) {
+        if (!this.firstCheck) {
           const pokemon = element.querySelector('img')!;
           const pokemonName = element.querySelector('.pokemon-name')!;
 
-          const random = Math.floor(Math.random() * 299) + 1;
-          pokemon.src = `/pokemons/${random}.svg`;
-          pokemonName.textContent = getPokemonName(random);
+          pokemon.classList.add('fade-out');
+
+          setTimeout(() => {
+            const random = Math.floor(Math.random() * 299) + 1;
+            pokemon.src = `/pokemons/${random}.svg`;
+            pokemonName.textContent = getPokemonName(random);
+            pokemon.classList.remove('fade-out');
+          }, 750);
         }
       });
 

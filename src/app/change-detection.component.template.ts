@@ -18,11 +18,11 @@ export function template(children: string = ''): string {
 
         <div>
           <div style="height: 120px; padding: 10px;">
-            <img style="height: 100%; width: 100%" [src]="'pokemons/' + pokemon() + '.svg'" />
+            <img class="transition-img" style="view-transition-name: pokemon-image; height: 100%; width: 100%" [src]="'pokemons/' + pokemon() + '.svg'" />
           </div>
 
           <div style="margin: 10px 0;">
-            <span class="pokemon-name" style="text-align: center; font-weight: 600; text-transform: capitalize;">{{ pokemonName() }}</span>
+            <span class="pokemon-name" style="view-transition-name: pokemon-title; text-align: center; font-weight: 600; text-transform: capitalize;">{{ pokemonName() }}</span>
           </div>
         </div>
 

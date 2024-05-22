@@ -194,7 +194,6 @@ span.strategy-box {
   display: flex;
   flex-direction: column;
   max-width: 138px;
-  margin-top: 4px;
 
   .tag {
     font-size: 11px;
@@ -247,4 +246,13 @@ select + button {
     border-top-right-radius: 0;
     border-bottom-left-radius: 0;
   }
+}
+
+.transition-img {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+}
+
+.transition-img.fade-out {
+    opacity: 0;
 }

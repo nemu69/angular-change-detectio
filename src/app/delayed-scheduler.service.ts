@@ -11,7 +11,7 @@ export class DelayedScheduler {
   private _done$ = new Subject<void>();
 
   constructor(private _zone: NgZone) {
-    this._done$.pipe(take(1)).subscribe(() => DelayedScheduler.DELAY = 600);
+    this._done$.pipe(take(1)).subscribe(() => DelayedScheduler.DELAY = 1000);
   }
 
   public schedule(fn: Fn): void {

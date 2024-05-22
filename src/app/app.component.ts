@@ -6,11 +6,16 @@ import {Subject} from 'rxjs';
 import {DirtyCheckService} from './dirty-check.service';
 import {NumberHolder} from './number-holder';
 import {WarningService} from './warning.service';
+import { AppModule } from './app.module';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [
+    AppModule,
+  ]
 })
 export class AppComponent implements OnInit, AfterViewInit {
   private destroyRef = inject(DestroyRef);

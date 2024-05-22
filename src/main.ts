@@ -1,9 +1,20 @@
-import {enableProdMode} from '@angular/core';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
 
-import {AppModule} from './app/app.module';
+import { EVENT_MANAGER_PLUGINS, bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+import { ZoneEventPlugin } from './app/zone.event-plugin';
+import { provideRouter, withViewTransitions } from '@angular/router';
 
 enableProdMode();
 
-platformBrowserDynamic().bootstrapModule(AppModule).catch(
-    err => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    {
+      provide: EVENT_MANAGER_PLUGINS,
+      useClass: ZoneEventPlugin,
+      multi: true,
+    },
+    provideZoneChangeDetection({ ignoreChangesOutsideZone: true }),
+    provideRouter([], withViewTransitions({ skipInitialTransition: true })),
+  ]
+});

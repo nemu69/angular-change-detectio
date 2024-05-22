@@ -16,9 +16,9 @@ export class ColorService {
     });
   }
 
-  public colorDirtyCheck(elementRef: ElementRef, firstCheck: boolean): void {
+  public colorDirtyCheck(elementRef: ElementRef): void {
     this._zone.runOutsideAngular(() => {
-      this._dirtyCheckColoringService.dirtyCheck(elementRef, firstCheck);
+      this._dirtyCheckColoringService.dirtyCheck(elementRef);
     });
   }
 
