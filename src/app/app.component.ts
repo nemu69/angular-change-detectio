@@ -7,6 +7,7 @@ import {DirtyCheckService} from './dirty-check.service';
 import {NumberHolder} from './number-holder';
 import {WarningService} from './warning.service';
 import { AppModule } from './app.module';
+import { ENABLE_ZONELESS } from 'src/main';
 
 @Component({
   selector: 'app-root',
@@ -58,6 +59,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   @ViewChild('qrcode_canvas', {static: true}) private _canvas!: ElementRef<HTMLCanvasElement>;
 
+  enableZoneless = localStorage.getItem(ENABLE_ZONELESS);
+
   constructor(
       private _zone: NgZone,
       private _appRef: ApplicationRef,
@@ -71,6 +74,16 @@ export class AppComponent implements OnInit, AfterViewInit {
     if (error) console.error(error)
       console.log('success!');
     })
+  }
+
+  onEnableZonelessClicked(): void {
+    if (localStorage.getItem(ENABLE_ZONELESS) === "1") {
+      localStorage.setItem(ENABLE_ZONELESS, "0");
+    } else {
+      localStorage.setItem(ENABLE_ZONELESS, "1");
+    }
+
+    window.location.reload();
   }
 
   onTick() {
@@ -87,8 +100,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     onClear() {
-      this._warningService.hideWarning();
-      this._dirtyCheckColoringService.clearColoring();
+      // this._warningService.hideWarning();
+      // this._dirtyCheckColoringService.clearColoring();
     }
 
     clickNoop(): void {

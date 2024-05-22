@@ -62,7 +62,13 @@
   </section>
 </div>
 
-<div class="cd-warning" (click.outside)="onTick()">Remember to trigger <i>tick()</i> to fire CD</div>
+<div style="margin-bottom: 1rem; display: flex; align-items: center; justify-content: center;">
+  <label style="font-weight: 600;"><input type="checkbox" (click)="onEnableZonelessClicked()" [checked]="enableZoneless" />Enable Zoneless</label>
+</div>
+
+@if(!enableZoneless) {
+  <div class="cd-warning" (click.outside)="onTick()">Remember to trigger <i>tick()</i> to fire CD</div>
+}
 
 <main>
   <app-comp-1 [inputByVal]="inputByVal" [inputByRef]="inputByRef" [inputObservable]="inputObservable"></app-comp-1>

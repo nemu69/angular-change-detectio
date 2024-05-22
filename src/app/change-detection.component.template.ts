@@ -1,6 +1,13 @@
 export function template(children: string = ''): string {
   return `
     {{ touch() }}
+    <table style="display: none">
+      <tr><th>input value:</th><td class="input-value">{{inputByVal}}</td></tr>
+      <tr><th>object prop:</th><td class="input-value">{{inputByRef.value}}</td></tr>
+      <tr><th>observable:</th><td class="input-value">{{inputObservableValue}}</td></tr>
+      <tr><th>local signal:</th><td class="input-value">{{signal()}}</td></tr>
+    </table>
+
     <header>
       <span>
         <span class="tag strategy-box {{ cdStrategyName }}">{{ cdStrategyName }}</span>
