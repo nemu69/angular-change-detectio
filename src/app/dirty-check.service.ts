@@ -31,6 +31,7 @@ export class DirtyCheckService {
 
   public setAutoClearColoring(autoClear: boolean): void {
     this._autoClearColoring = autoClear;
+
     if (autoClear) {
       this.clearColoring();
     }

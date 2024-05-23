@@ -1,6 +1,5 @@
 import {AfterViewInit, ApplicationRef, Component, DestroyRef, effect, ElementRef, Inject, inject, NgZone, OnInit, Renderer2, viewChild, ViewChild} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {toCanvas} from 'qrcode';
 import {Subject} from 'rxjs';
 
 import {DirtyCheckService} from './dirty-check.service';
@@ -18,7 +17,7 @@ import { ENABLE_ZONELESS } from 'src/main';
     AppModule,
   ]
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements AfterViewInit {
   private destroyRef = inject(DestroyRef);
 
   private value = 0;
@@ -26,34 +25,17 @@ export class AppComponent implements OnInit, AfterViewInit {
   public inputByRef = new NumberHolder();
   public inputObservable = new Subject<number>();
 
-  @ViewChild('apptick_button', {static: true}) private _apptickButton!: ElementRef;
-
-  @ViewChild('timeout_button', {static: true}) private _timeoutButton!: ElementRef;
-
-  @ViewChild('click_button', {static: true}) private _clickButton!: ElementRef;
-
-  @ViewChild('trigger_change', {static: true}) private _triggerChangeButton!: ElementRef;
-
-  @ViewChild('clear', {static: true}) private _clearButton!: ElementRef;
-
-  @ViewChild('input_value_field', {static: true})
-  private _inputValueField!: ElementRef<HTMLElement>;
-
-  @ViewChild('propagate_by_value_checkbox', {static: true})
-  private _propagateByValueCheckbox!: ElementRef<HTMLInputElement>;
-
-  @ViewChild('propagate_by_ref_checkbox', {static: true})
-  private _propagateByRefCheckbox!: ElementRef<HTMLInputElement>;
-
-  @ViewChild('propagate_by_observable_checkbox', {static: true})
-  private _propagateByObservableCheckbox!: ElementRef<HTMLInputElement>;
-
-  @ViewChild('propagate_in_zone_checkbox', {static: true})
-  private _propagateInZoneCheckbox!: ElementRef<HTMLInputElement>;
-
-  @ViewChild('qrcode_canvas', {static: true}) private _canvas!: ElementRef<HTMLCanvasElement>;
-
-  private _autoClearCheckbox = viewChild<ElementRef<HTMLInputElement>>('auto_clear');
+  private _apptickButton = viewChild.required<ElementRef<HTMLButtonElement>>('apptick_button');
+  private _timeoutButton = viewChild.required<ElementRef<HTMLButtonElement>>('timeout_button');
+  private _clickButton = viewChild.required<ElementRef<HTMLButtonElement>>('click_button');
+  private _triggerChangeButton = viewChild.required<ElementRef<HTMLButtonElement>>('trigger_change');
+  private _clearButton = viewChild.required<ElementRef<HTMLButtonElement>>('clear');
+  private _inputValueField = viewChild.required<ElementRef<HTMLInputElement>>('input_value_field');
+  private _propagateByValueCheckbox = viewChild.required<ElementRef<HTMLInputElement>>('propagate_by_value_checkbox');
+  private _propagateByRefCheckbox = viewChild.required<ElementRef<HTMLInputElement>>('propagate_by_ref_checkbox');
+  private _propagateByObservableCheckbox = viewChild.required<ElementRef<HTMLInputElement>>('propagate_by_observable_checkbox');
+  private _propagateInZoneCheckbox = viewChild.required<ElementRef<HTMLInputElement>>('propagate_in_zone_checkbox');
+  private _autoClearCheckbox = viewChild.required<ElementRef<HTMLInputElement>>('auto_clear');
 
   enableZoneless = localStorage.getItem(ENABLE_ZONELESS) === "1";
 
@@ -66,29 +48,16 @@ export class AppComponent implements OnInit, AfterViewInit {
       private _warningService: WarningService,
   ) {
     effect(() => {
-      const autoClearElement = this._autoClearCheckbox()?.nativeElement;
-
-      if (autoClearElement) {
-        this.renderer.listen(autoClearElement, 'click', this.onAutoCheckboxChange);
-      }
+      this._zone.runOutsideAngular(() => {
+        this.renderer.listen(this._autoClearCheckbox().nativeElement, 'click', this.onAutoCheckboxChange.bind(this));
+        this.renderer.listen(this._clearButton().nativeElement, 'click', this.onClear.bind(this));
+        this.renderer.listen(this._timeoutButton().nativeElement, 'click', this.onTimeout.bind(this));
+      });
     });
   }
 
-  ngOnInit(): void{var canvas = document.getElementById('canvas')
-
-    toCanvas(this._canvas.nativeElement, window.location.href , function(error) {
-    if (error) console.error(error)
-      console.log('success!');
-    })
-  }
-
-  onEnableZonelessClicked(): void {
-    if (localStorage.getItem(ENABLE_ZONELESS) === "1") {
-      localStorage.setItem(ENABLE_ZONELESS, "0");
-    } else {
-      localStorage.setItem(ENABLE_ZONELESS, "1");
-    }
-
+  toggleZoneless(): void {
+    localStorage.setItem(ENABLE_ZONELESS, this.enableZoneless ? '0' : '1');
     window.location.reload();
   }
 
@@ -106,8 +75,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     onClear() {
-      // this._warningService.hideWarning();
-      // this._dirtyCheckColoringService.clearColoring();
+      this._warningService.hideWarning();
+      this._dirtyCheckColoringService.clearColoring();
     }
 
     clickNoop(): void {
@@ -115,7 +84,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     onAutoCheckboxChange(event: Event) {
-      console.log(event); 
       const element = event.target as HTMLInputElement;
       this._dirtyCheckColoringService.setAutoClearColoring(element.checked);
     }
@@ -135,19 +103,19 @@ export class AppComponent implements OnInit, AfterViewInit {
       // Busy
       this._dirtyCheckColoringService.busy$.pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe((busy) => {
-            this._apptickButton.nativeElement.disabled = busy;
-            this._timeoutButton.nativeElement.disabled = busy;
-            this._clickButton.nativeElement.disabled = busy;
-            this._autoClearCheckbox()!.nativeElement.disabled = busy;
-            this._triggerChangeButton.nativeElement.disabled = busy;
-            this._propagateByValueCheckbox.nativeElement.disabled = busy;
-            this._propagateByRefCheckbox.nativeElement.disabled = busy;
-            this._propagateByObservableCheckbox.nativeElement.disabled = busy;
-            this._propagateInZoneCheckbox.nativeElement.disabled = busy;
+            this._apptickButton().nativeElement.disabled = busy;
+            this._timeoutButton().nativeElement.disabled = busy;
+            this._clickButton().nativeElement.disabled = busy;
+            this._autoClearCheckbox().nativeElement.disabled = busy;
+            this._triggerChangeButton().nativeElement.disabled = busy;
+            this._propagateByValueCheckbox().nativeElement.disabled = busy;
+            this._propagateByRefCheckbox().nativeElement.disabled = busy;
+            this._propagateByObservableCheckbox().nativeElement.disabled = busy;
+            this._propagateInZoneCheckbox().nativeElement.disabled = busy;
             if (busy && !this._dirtyCheckColoringService.isAutoClearColoring) {
-              this._clearButton.nativeElement.classList.add('emphasize');
+              this._clearButton().nativeElement.classList.add('emphasize');
             } else {
-              this._clearButton.nativeElement.classList.remove('emphasize');
+              this._clearButton().nativeElement.classList.remove('emphasize');
             }
           });
     }
@@ -167,27 +135,27 @@ export class AppComponent implements OnInit, AfterViewInit {
 
       // Update DOM directly because outside Angular zone to not trigger change
       // detection
-      const valueElement = this._inputValueField.nativeElement;
+      const valueElement = this._inputValueField().nativeElement;
       valueElement.innerHTML = this.value.toString(10);
     }
 
     private isAutoClear(): boolean {
-      return !!this._autoClearCheckbox()?.nativeElement.checked;
+      return !!this._autoClearCheckbox().nativeElement.checked;
     }
 
     private isPropagateByValue(): boolean {
-      return this._propagateByValueCheckbox.nativeElement.checked;
+      return this._propagateByValueCheckbox().nativeElement.checked;
     }
 
     private isPropagateByRef(): boolean {
-      return this._propagateByRefCheckbox.nativeElement.checked;
+      return this._propagateByRefCheckbox().nativeElement.checked;
     }
 
     private isPropagateByObservable(): boolean {
-      return this._propagateByObservableCheckbox.nativeElement.checked;
+      return this._propagateByObservableCheckbox().nativeElement.checked;
     }
 
     private isPropagateInZone(): boolean {
-      return this._propagateInZoneCheckbox.nativeElement.checked;
+      return this._propagateInZoneCheckbox().nativeElement.checked;
     }
 }

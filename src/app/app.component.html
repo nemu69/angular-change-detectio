@@ -5,7 +5,6 @@
       <button #apptick_button (click.outside)="onTick()" text="AppRef.tick()">AppRef.tick()</button>
       <button
         #timeout_button
-        (click.outside)="onTimeout()"
         text="setTimeout(...)"
         title="Installs a timeout to run in 3s (in ng-zone)"
       >
@@ -23,7 +22,7 @@
         coloring automatically
       </label>
       <span class="filler"></span>
-      <button #clear (click.outside)="onClear()" text="Clear">Clear</button>
+      <button #clear text="Clear">Clear</button>
     </nav>
   </section>
 
@@ -63,7 +62,7 @@
 </div>
 
 <div style="margin-bottom: 1rem; display: flex; align-items: center; justify-content: center;">
-  <label style="font-weight: 600;"><input type="checkbox" (click)="onEnableZonelessClicked()" [checked]="enableZoneless" />Enable Zoneless</label>
+  <label style="font-weight: 600;"><input type="checkbox" (click)="toggleZoneless()" [checked]="enableZoneless" />Enable Zoneless</label>
 </div>
 
 @if(!enableZoneless) {
