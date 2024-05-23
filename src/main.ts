@@ -16,7 +16,7 @@ bootstrapApplication(AppComponent, {
       useClass: ZoneEventPlugin,
       multi: true,
     },
-    localStorage.getItem(ENABLE_ZONELESS) === "1" ? provideExperimentalZonelessChangeDetection() : provideZoneChangeDetection({ ignoreChangesOutsideZone: true }),
+    localStorage.getItem(ENABLE_ZONELESS) === "1" ? provideExperimentalZonelessChangeDetection() : provideZoneChangeDetection({ ignoreChangesOutsideZone: true, eventCoalescing: true, }),
     provideRouter([], withViewTransitions({ skipInitialTransition: true })),
   ]
 });

@@ -1,4 +1,4 @@
-import {AfterViewInit, ApplicationRef, Component, DestroyRef, ElementRef, inject, NgZone, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ApplicationRef, Component, DestroyRef, effect, ElementRef, Inject, inject, NgZone, OnInit, Renderer2, viewChild, ViewChild} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {toCanvas} from 'qrcode';
 import {Subject} from 'rxjs';
@@ -36,12 +36,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   @ViewChild('clear', {static: true}) private _clearButton!: ElementRef;
 
-  @ViewChild('auto_clear', {static: true})
-  private _autoClearCheckbox!: ElementRef<HTMLInputElement>;
-
-  @ViewChild('toggle_content_children', {static: true})
-  private _toggleContentChildren!: ElementRef<HTMLElement>;
-
   @ViewChild('input_value_field', {static: true})
   private _inputValueField!: ElementRef<HTMLElement>;
 
@@ -59,14 +53,26 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   @ViewChild('qrcode_canvas', {static: true}) private _canvas!: ElementRef<HTMLCanvasElement>;
 
-  enableZoneless = localStorage.getItem(ENABLE_ZONELESS);
+  private _autoClearCheckbox = viewChild<ElementRef<HTMLInputElement>>('auto_clear');
+
+  enableZoneless = localStorage.getItem(ENABLE_ZONELESS) === "1";
+
+  renderer = inject(Renderer2);
 
   constructor(
       private _zone: NgZone,
       private _appRef: ApplicationRef,
       private _dirtyCheckColoringService: DirtyCheckService,
       private _warningService: WarningService,
-  ) {}
+  ) {
+    effect(() => {
+      const autoClearElement = this._autoClearCheckbox()?.nativeElement;
+
+      if (autoClearElement) {
+        this.renderer.listen(autoClearElement, 'click', this.onAutoCheckboxChange);
+      }
+    });
+  }
 
   ngOnInit(): void{var canvas = document.getElementById('canvas')
 
@@ -109,6 +115,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     onAutoCheckboxChange(event: Event) {
+      console.log(event); 
       const element = event.target as HTMLInputElement;
       this._dirtyCheckColoringService.setAutoClearColoring(element.checked);
     }
@@ -131,7 +138,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             this._apptickButton.nativeElement.disabled = busy;
             this._timeoutButton.nativeElement.disabled = busy;
             this._clickButton.nativeElement.disabled = busy;
-            this._autoClearCheckbox.nativeElement.disabled = busy;
+            this._autoClearCheckbox()!.nativeElement.disabled = busy;
             this._triggerChangeButton.nativeElement.disabled = busy;
             this._propagateByValueCheckbox.nativeElement.disabled = busy;
             this._propagateByRefCheckbox.nativeElement.disabled = busy;
@@ -165,7 +172,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     private isAutoClear(): boolean {
-      return this._autoClearCheckbox.nativeElement.checked;
+      return !!this._autoClearCheckbox()?.nativeElement.checked;
     }
 
     private isPropagateByValue(): boolean {

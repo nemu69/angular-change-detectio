@@ -9,7 +9,10 @@ export class WarningService {
 
   constructor() {
     this._showWarning.pipe(takeUntilDestroyed()).subscribe((show) => {
-      (document.querySelector(".cd-warning") as HTMLElement).style["opacity"] = show ? "1" : "0";
+      const warningElement = (document.querySelector(".cd-warning") as HTMLElement);
+      if (warningElement) {
+        warningElement.style["opacity"] = show ? "1" : "0";
+      }
     });
   }
 
