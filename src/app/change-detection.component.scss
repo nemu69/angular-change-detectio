@@ -12,6 +12,7 @@ $collapse-button-size: 15px;
   min-width: $collapse-button-size;
   min-height: $collapse-button-size;
   border: 1px solid var(--quinary-contrast);
+  width: fit-content;
 
   &:hover {
     &::before {
@@ -140,6 +141,7 @@ $collapse-button-size: 15px;
     position: relative;
     z-index: 10;
     transition: border 0.3s ease;
+    gap: 4px;
 
     h3 {
       display: inline-block;

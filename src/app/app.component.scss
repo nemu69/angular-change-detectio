@@ -39,8 +39,8 @@
 
   main {
     position: relative; // positioned anchor
-    overflow-y: scroll;
     flex: auto;
+    margin: 0 auto;
 
     .explanation {
       article {

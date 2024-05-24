@@ -18,13 +18,13 @@ export function template(children: string = ''): string {
     </header>
     <div #component class="component">
       <div class="action-wrapper">
-        <div>
+        <div style="margin-top: 4px;">
           <span class="tag ng-on-changes-box" #ng_on_changes_box>ngOnChanges</span>
           <span class="tag cd-state-box" #cd_state_box></span>
         </div>
 
         <div>
-          <div style="height: 120px; padding: 10px;">
+          <div style="height: 100px; padding: 10px;">
             <img class="transition-img" style="view-transition-name: pokemon-image; height: 100%; width: 100%" [src]="'pokemons/' + pokemon() + '.svg'" />
           </div>
 

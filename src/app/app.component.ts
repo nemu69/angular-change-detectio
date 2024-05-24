@@ -7,6 +7,7 @@ import {NumberHolder} from './number-holder';
 import {WarningService} from './warning.service';
 import { AppModule } from './app.module';
 import { ENABLE_ZONELESS } from 'src/main';
+import { toCanvas } from 'qrcode';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ import { ENABLE_ZONELESS } from 'src/main';
     AppModule,
   ]
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit {
   private destroyRef = inject(DestroyRef);
 
   private value = 0;
@@ -36,6 +37,7 @@ export class AppComponent implements AfterViewInit {
   private _propagateByObservableCheckbox = viewChild.required<ElementRef<HTMLInputElement>>('propagate_by_observable_checkbox');
   private _propagateInZoneCheckbox = viewChild.required<ElementRef<HTMLInputElement>>('propagate_in_zone_checkbox');
   private _autoClearCheckbox = viewChild.required<ElementRef<HTMLInputElement>>('auto_clear');
+  private _canvas = viewChild.required<ElementRef<HTMLInputElement>>('qrcode_canvas');
 
   enableZoneless = localStorage.getItem(ENABLE_ZONELESS) === "1";
 
@@ -53,6 +55,13 @@ export class AppComponent implements AfterViewInit {
         this.renderer.listen(this._clearButton().nativeElement, 'click', this.onClear.bind(this));
         this.renderer.listen(this._timeoutButton().nativeElement, 'click', this.onTimeout.bind(this));
       });
+    });
+  }
+
+  ngOnInit(): void {
+    toCanvas(this._canvas().nativeElement, window.location.href , function(error) {
+      if (error) console.error(error)
+        console.log('success!');
     });
   }
 
