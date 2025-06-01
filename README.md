@@ -1,10 +1,7 @@
-# EduChangeDetection
+# Angular Change Detection - Zoneless
 
 This project illustrates how Angular change detection works.
-
-## Live demo URL
-
-https://jeanmeche.github.io/angular-change-detection/
+It is a fork of [JeanMeche angular-change-detection](https://github.com/JeanMeche/angular-change-detection) with the Zoneless option
 
 ## Development server
 
