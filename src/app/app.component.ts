@@ -10,13 +10,12 @@ import { ENABLE_ZONELESS } from 'src/main';
 import { toCanvas } from 'qrcode';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  standalone: true,
-  imports: [
-    AppModule,
-  ]
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    imports: [
+        AppModule,
+    ]
 })
 export class AppComponent implements OnInit, AfterViewInit {
   private destroyRef = inject(DestroyRef);

@@ -23,11 +23,12 @@ const CHILD_TEMPLATE = `
 `;
 
 @Component({
-  selector: `app-${NAME}`,
-  template: template(CHILD_TEMPLATE),
-  styleUrls: ['./../change-detection.component.scss'],
-  providers: [ColorService],
-  changeDetection: CD_STRATEGY,
+    selector: `app-${NAME}`,
+    template: template(CHILD_TEMPLATE),
+    styleUrls: ['./../change-detection.component.scss'],
+    providers: [ColorService],
+    changeDetection: CD_STRATEGY,
+    standalone: false
 })
 export class Comp_1_2_Component extends AbstractChangeDetectionComponent {
   constructor() {

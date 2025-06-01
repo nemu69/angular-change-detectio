@@ -8,11 +8,12 @@ const LEVEL = 4;
 const CD_STRATEGY = ChangeDetectionStrategy.Default;
 
 @Component({
-  selector: `app-${NAME}`,
-  template: template(),
-  styleUrls: ["./../change-detection.component.scss"],
-  providers: [ColorService],
-  changeDetection: CD_STRATEGY,
+    selector: `app-${NAME}`,
+    template: template(),
+    styleUrls: ["./../change-detection.component.scss"],
+    providers: [ColorService],
+    changeDetection: CD_STRATEGY,
+    standalone: false
 })
 export class Comp_1_x_4_1_Component extends AbstractChangeDetectionComponent {
   constructor() {
