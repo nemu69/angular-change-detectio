@@ -1,9 +1,9 @@
+<header>Angular Change Detection - based on {{ version }}</header>
 <div style="margin: 0 auto; max-width: 1500px;">
   <div class="control">
-    <section class="card">
+    <section class="card" style="display: none">
       <header><h3>Trigger global actions</h3></header>
       <nav>
-        <button #apptick_button (click.outside)="onTick()" text="AppRef.tick()">AppRef.tick()</button>
         <button
           #timeout_button
           text="setTimeout(...)"
@@ -27,7 +27,7 @@
       </nav>
     </section>
 
-    <section class="card">
+    <section class="card" style="display: none">
       <header>
         <h3>Play with component input - current value: <span #input_value_field>n/a</span></h3>
       </header>
@@ -66,10 +66,6 @@
     <label style="font-weight: 600;"><input type="checkbox" (click)="toggleZoneless()" [checked]="enableZoneless" />Enable Zoneless</label>
   </div>
 
-  @if(!enableZoneless) {
-    <div class="cd-warning" (click.outside)="onTick()">Remember to trigger <i>tick()</i> to fire CD</div>
-  }
-
   <main>
     <app-comp-1 [inputByVal]="inputByVal" [inputByRef]="inputByRef" [inputObservable]="inputObservable"></app-comp-1>
 
@@ -95,49 +91,5 @@
       </article>
     </section>
 
-    <div class="explanation">
-      <section class="card">
-        <header><h3>Good readings</h3></header>
-        <ul>
-          <li>
-            <a
-              href="https://angularindepth.com/posts/1053/everything-you-need-to-know-about-change-detection-in-angular"
-              target="_blank"
-              >Everything you need to know about change detection in Angular</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://blog.thoughtram.io/angular/2016/02/22/angular-2-change-detection-explained.html"
-              target="_blank"
-              >ANGULAR CHANGE DETECTION EXPLAINED</a
-            >
-          </li>
-          <li>
-            <a href="https://medium.com/@antoniopk/angular-change-detection-explained-169aea595423" target="_blank">
-              Change Detection Fundamentals in Angular
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section class="card">
-        <header><h3>Credit</h3></header>
-        <article>
-          <p>
-            This project is forked from
-            <a href="https://github.com/danielwiehl/edu-angular-change-detection">Daniel Wiehl's CD demo</a>. I'd like to
-            thank him for his initial work.
-          </p>
-          <p>
-            You can find this current demo
-            <a href="https://github.com/jeanmeche/angular-change-detection">On my repo</a>.
-          </p>
-
-          <p>QR Code to this page:</p>
-          <canvas #qrcode_canvas></canvas>
-        </article>
-      </section>
-    </div>
   </main>
 </div>

@@ -26,7 +26,7 @@ button.emphasize {
   border: 1px solid var(--senary-contrast);
   border-radius: 0.25rem;
   position: relative;
-  transition: border 0.3s ease;
+  transition: border 0.2s ease;
 
   &::before {
     content: "";
@@ -62,7 +62,7 @@ button.emphasize {
     background-color: var(--octonary-contrast);
     position: relative;
     z-index: 10;
-    transition: border 0.3s ease;
+    transition: border 0.2s ease;
 
     h3 {
       display: inline-block;

@@ -1,13 +1,13 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, computed, DestroyRef, Directive, ElementRef, HostBinding, inject, Injectable, Input, NgZone, OnChanges, signal, SimpleChanges, ViewChild} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {fromEvent, Observable, Subject} from 'rxjs';
-import {takeUntil, tap} from 'rxjs/operators';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, computed, DestroyRef, Directive, ElementRef, HostBinding, inject, Injectable, Input, NgZone, OnChanges, signal, SimpleChanges, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { fromEvent, Observable, Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
 
-import {ColorService} from './color.service';
-import {DirtyCheckService} from './dirty-check.service';
-import {NumberHolder} from './number-holder';
-import {WarningService} from './warning.service';
 import { getPokemonName } from 'pokemon.data';
+import { ColorService } from './color.service';
+import { DirtyCheckService } from './dirty-check.service';
+import { NumberHolder } from './number-holder';
+import { WarningService } from './warning.service';
 
 @Directive()
 export abstract class AbstractChangeDetectionComponent implements AfterViewInit, OnChanges {

@@ -1,8 +1,8 @@
 import { ElementRef, Injectable, NgZone } from "@angular/core";
-import { BehaviorSubject, Observable, Subject, of } from "rxjs";
+import { getPokemonName } from "pokemon.data";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { delay, delayWhen, distinctUntilChanged, take } from "rxjs/operators";
 import { DelayedScheduler } from "./delayed-scheduler.service";
-import { getPokemonName } from "pokemon.data";
 
 /**
  * Controls coloring of dirty checked components.
@@ -56,7 +56,7 @@ export class DirtyCheckService {
             pokemon.src = `/pokemons/${random}.svg`;
             pokemonName.textContent = getPokemonName(random);
             pokemon.classList.remove('fade-out');
-          }, 750);
+          }, 500);
         }
       });
 
@@ -64,7 +64,7 @@ export class DirtyCheckService {
         this._delayedScheduler.done$
           .pipe(
             take(1), // subscribe once
-            delay(1000) // clear after 1s
+            delay(2000) // clear after 1s
           )
           .subscribe(() => {
             element.classList.remove(cssClass);

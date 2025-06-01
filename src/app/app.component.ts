@@ -1,13 +1,12 @@
-import {AfterViewInit, ApplicationRef, Component, DestroyRef, effect, ElementRef, Inject, inject, NgZone, OnInit, Renderer2, viewChild, ViewChild} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {Subject} from 'rxjs';
+import { AfterViewInit, ApplicationRef, Component, DestroyRef, effect, ElementRef, inject, NgZone, Renderer2, VERSION, viewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subject } from 'rxjs';
 
-import {DirtyCheckService} from './dirty-check.service';
-import {NumberHolder} from './number-holder';
-import {WarningService} from './warning.service';
-import { AppModule } from './app.module';
 import { ENABLE_ZONELESS } from 'src/main';
-import { toCanvas } from 'qrcode';
+import { AppModule } from './app.module';
+import { DirtyCheckService } from './dirty-check.service';
+import { NumberHolder } from './number-holder';
+import { WarningService } from './warning.service';
 
 @Component({
     selector: 'app-root',
@@ -17,7 +16,7 @@ import { toCanvas } from 'qrcode';
         AppModule,
     ]
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements AfterViewInit {
   private destroyRef = inject(DestroyRef);
 
   private value = 0;
@@ -39,6 +38,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   private _canvas = viewChild.required<ElementRef<HTMLInputElement>>('qrcode_canvas');
 
   enableZoneless = localStorage.getItem(ENABLE_ZONELESS) === "1";
+  version = VERSION.full;
 
   renderer = inject(Renderer2);
 
@@ -54,13 +54,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.renderer.listen(this._clearButton().nativeElement, 'click', this.onClear.bind(this));
         this.renderer.listen(this._timeoutButton().nativeElement, 'click', this.onTimeout.bind(this));
       });
-    });
-  }
-
-  ngOnInit(): void {
-    toCanvas(this._canvas().nativeElement, window.location.href , function(error) {
-      if (error) console.error(error)
-        console.log('success!');
     });
   }
 
